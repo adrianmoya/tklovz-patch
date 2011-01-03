@@ -1,0 +1,55 @@
+#!/bin/bash -ex
+
+# Conf script for tklovz - leveraging TKLPatch to create
+# OpenVZ templates from ISOs
+
+# replace rsyslog with syslog-ng (for performance)
+apt-get remove --purge -y rsyslog
+
+# remove unrequired init scripts
+cd /etc/init
+rm -f console* control* hwclock* module* mount* network-interface* plymouth* procps* tty* udev* upstart* 
+
+# install packages
+apt-get update
+apt-get install --force-yes -y gpgv
+apt-get install -y adduser apt-utils console-setup iproute netbase nano openssh-blacklist openssh-blacklist-extra openssh-server quota ping sudo vim syslog-ng 
+
+service syslog-ng stop
+
+# Hold mountall upstart
+echo "mountall hold"|dpkg --set-selections
+echo "upstart hold"|dpkg --set-selections
+
+#Fix modprobe
+rm /sbin/modprobe
+ln -s /bin/true /sbin/modprobe
+
+#Fix ssh
+sed -i -e 's_oom never_#oom never_g' /etc/init/ssh.conf
+
+# clean your packages
+apt-get clean
+apt-get autoremove
+
+#Generate a unique set of ssh (host) keys.
+rm -f /etc/ssh/ssh_host_*
+
+cat << EOF > /etc/rc2.d/S15ssh_gen_host_keys
+#!/bin/sh
+ssh-keygen -f /etc/ssh/ssh_host_rsa_key -t rsa -N ''
+ssh-keygen -f /etc/ssh/ssh_host_dsa_key -t dsa -N ''
+rm -f \$0
+EOF
+
+chmod a+x /etc/rc2.d/S15ssh_gen_host_keys
+
+# disable some unnecessary boot scripts
+update-rc.d -f ondemand remove
+
+# Clear log files
+> /etc/resolv.conf \
+echo localhost > /etc/hostname \
+> /var/log/messages; > /var/log/auth.log; > /var/log/kern.log; > /var/log/bootstrap.log; \
+> /var/log/dpkg.log; > /var/log/syslog; > /var/log/daemon.log; > /var/log/apt/term.log; rm -f /var/log/*.0 /var/log/*.1
+
