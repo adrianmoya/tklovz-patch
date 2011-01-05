@@ -11,7 +11,7 @@ You must note that when using openVZ templates:
 
 - The template name will be the iso name plus -ovz.tar.gz at the end. So if your going to use it in proxmox, be sure to rename it following their guidelines:
 
-<lt;OS>gt;-<lt;OSVERSION>gt;-<lt;NAME>gt;_<lt;VERSION>gt;_<lt;ARCH>gt;.tar.gz
+< OS >-< OSVERSION >-< NAME >_< VERSION >_< ARCH >.tar.gz
 For Example: "turnkeylinux-10.04-revision-control_11.0_i386.tar.gz"
 
 - The host name ends up being renamed to what you specify in the creation of the container. Also the root password is specified in the creation step.
