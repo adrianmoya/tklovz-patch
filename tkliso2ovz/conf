@@ -13,7 +13,7 @@ rm -f console* control* hwclock* module* mount* network-interface* plymouth* pro
 # install packages
 apt-get update
 apt-get install --force-yes -y gpgv
-apt-get install -y adduser apt-utils console-setup iproute netbase nano openssh-blacklist openssh-blacklist-extra openssh-server quota ping sudo vim syslog-ng 
+apt-get install -y quota syslog-ng 
 
 service syslog-ng stop
 
