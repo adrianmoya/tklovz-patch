@@ -52,4 +52,4 @@ update-rc.d -f ondemand remove
 echo localhost > /etc/hostname \
 > /var/log/messages; > /var/log/auth.log; > /var/log/kern.log; > /var/log/bootstrap.log; \
 > /var/log/dpkg.log; > /var/log/syslog; > /var/log/daemon.log; > /var/log/apt/term.log; rm -f /var/log/*.0 /var/log/*.1
-
+rm /dev/log
