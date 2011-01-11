@@ -18,8 +18,9 @@ apt-get install -y quota syslog-ng
 service syslog-ng stop
 
 # Hold mountall upstart
-echo "mountall hold"|dpkg --set-selections
-echo "upstart hold"|dpkg --set-selections
+echo "mountall hold" | dpkg --set-selections
+echo "upstart hold" | dpkg --set-selections
+echo "ifupdown hold" | dpkg --set-selections
 
 #Fix modprobe
 rm /sbin/modprobe
